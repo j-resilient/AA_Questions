@@ -1,5 +1,7 @@
 # AA_Questions  
 An application to create and manage a database of students questions.  
+It tracks questions, replies to questions, replies to replies, and question likes.  
+Uses Ruby, Rspec, and SQLite. 
 ## Learning Goals  
 (From App Academy Description)  
 > Know how to use a SQL script to construct a database
@@ -16,4 +18,10 @@ An application to create and manage a database of students questions.
 >
 > Be able to use GROUP BY and ORDER BY instead of Ruby code
 ## SQL  
+The database consists of three tables:  
+'users' tracks the user's first and last names. 
+'questions' tracks the title, the body, and the associated author (foreign key) of the questions  
+'question_follows' is a join table joining 'users' to 'questions' and vice versa  
+'replies' keeps references to the question, the parent reply, and the author user; it also keeps the actual reply  
+'question_likes' keeps references to the user and the question
 ## Ruby
