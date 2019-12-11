@@ -1,6 +1,7 @@
 require 'rspec'
 require_relative '../reply'
 require_relative '../questions_database'
+require_relative '../question'
 
 describe 'Reply' do
     describe "::find_by_id" do
@@ -53,6 +54,16 @@ describe 'Reply' do
         it 'returns the correct user' do
             expect(reply.author.fname).to eq('Tony')
             expect(reply.author.lname).to eq('Stark')
+        end
+    end
+
+    describe "#question" do
+        let(:reply) { Reply.find_by_id(3) }
+        it 'returns a Question object' do
+            expect(reply.question).to be_an_instance_of(Question)
+        end
+        it 'returns the correct question' do
+            expect(reply.question.title).to eq('Captain')
         end
     end
 end
