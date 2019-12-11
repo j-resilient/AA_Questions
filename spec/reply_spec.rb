@@ -44,4 +44,15 @@ describe 'Reply' do
             expect(replies.length).to eq(3)
         end
     end
+
+    describe "author" do
+        let(:reply) { Reply.find_by_id(1) }
+        it 'returns a User object' do
+            expect(reply.author).to be_an_instance_of(User)
+        end
+        it 'returns the correct user' do
+            expect(reply.author.fname).to eq('Tony')
+            expect(reply.author.lname).to eq('Stark')
+        end
+    end
 end
