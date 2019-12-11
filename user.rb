@@ -15,6 +15,18 @@ class User
         user.length > 0 ? User.new(user.first) : nil
     end
 
+    def self.find_by_name(first_name, last_name)
+      user = QuestionsDatabase.instance.execute(<<-SQL, first_name, last_name)
+            SELECT
+              *
+            FROM
+              users
+            WHERE
+              fname LIKE ? AND lname LIKE ? 
+        SQL
+        user.length > 0 ? User.new(user.first) : nil
+    end
+
     def initialize(options)
         @id = options['id']
         @fname = options['fname']
