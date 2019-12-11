@@ -27,10 +27,15 @@ describe 'User' do
             rhodey = User.find_by_name('James', 'Rhodes')
             expect(rhodey.authored_questions).to eq(nil)
         end
-
         subject(:pepper) { User.find_by_name('Pepper', 'Potts') }
+        let(:questions) { pepper.authored_questions }
+        it 'returns an array of Question objects' do
+            expect(questions).to be_an_instance_of(Array)
+            questions.each do |question|
+                expect(question).to be_an_instance_of(Question)
+            end
+        end
         it 'returns all questions by user' do
-            questions = pepper.authored_questions
             expect(questions.length).to eq(1)
             expect(questions.first.title).to eq('Social Security Number')
         end
