@@ -122,16 +122,16 @@ VALUES
     'Captain.');
 
 INSERT INTO
-  replies (question_id, user_id, body)
+  replies (question_id, parent_id, user_id, body)
 VALUES
-  (2,
+  (2, 3,
     (SELECT id FROM users WHERE lname = 'Rogers' AND fname = 'Steve'),
     'Captain.');
 
 INSERT INTO
-  replies (question_id, user_id, body)
+  replies (question_id, parent_id, user_id, body)
 VALUES
-  (2,
+  (2, 4,
     (SELECT id FROM users WHERE lname = 'Danvers' AND fname = 'Carol'), 'Captain.');
 
 CREATE TABLE question_likes
