@@ -35,4 +35,15 @@ describe 'User' do
             expect(questions.first.title).to eq('Social Security Number')
         end
     end
+
+    describe "#authored_replies" do
+        it 'returns nil if the user has no replies' do
+            rhodey = User.find_by_name('James', "Rhodes")
+            expect(rhodey.authored_replies).to eq(nil)
+        end
+        it 'returns all replies by user' do
+            tony = User.find_by_name('Tony', 'Stark')
+            expect(tony.authored_replies.length).to eq(1)
+        end
+    end
 end
