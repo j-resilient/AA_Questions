@@ -16,7 +16,7 @@ class Reply
     end
 
     def self.find_by_user_id(user_id)
-        reply = QuestionsDatabase.instance.execute(<<-SQL, user_id)
+        replies = QuestionsDatabase.instance.execute(<<-SQL, user_id)
             SELECT
                *
             FROM
@@ -24,7 +24,7 @@ class Reply
             WHERE
                user_id = ?
         SQL
-        reply.length > 0 ? Reply.new(reply.first) : nil
+        replies.length > 0 ? replies.map { |reply| Reply.new(reply) } : nil
     end
 
     def self.find_by_question_id(question_id)

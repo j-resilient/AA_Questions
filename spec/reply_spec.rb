@@ -16,11 +16,15 @@ describe 'Reply' do
         it 'returns nil if user_id has written no replies' do
             expect(Reply.find_by_user_id(10)).to eq(nil)
         end
-        it 'returns a reply object' do
-            expect(Reply.find_by_user_id(1)).to be_an_instance_of(Reply)
+        it 'returns an array reply objects' do
+            replies = Reply.find_by_user_id(1)
+            expect(replies).to be_an_instance_of(Array)
+            replies.each do |reply|
+                expect(reply).to be_an_instance_of(Reply)
+            end
         end
         it 'returns the correct reply' do
-            reply = Reply.find_by_user_id(1)
+            reply = Reply.find_by_user_id(1).first
             expect(reply.id).to eq(1)
         end
     end
