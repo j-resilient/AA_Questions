@@ -15,7 +15,8 @@ CREATE TABLE users (
 INSERT INTO
   users (fname, lname)
 VALUES
-  ('Tony', 'Stark'), ('Pepper', 'Potts'), ('James', 'Rhodes');
+  ('Tony', 'Stark'), ('Pepper', 'Potts'), ('James', 'Rhodes'),
+  ('Carol', 'Danvers'), ('Steve', 'Rogers'), ('Natasha', 'Romonov');
 
 
 CREATE TABLE questions
@@ -29,17 +30,34 @@ CREATE TABLE questions
 );
 
 INSERT INTO
-  questions
-  (title, body, author_id)
+  questions (title, body, author_id)
 VALUES
   ('Social Security Number', 'What is your social security number?', (
-      SELECT
+    SELECT
       id
     FROM
       users
     WHERE
         lname LIKE 'Potts'
     ));
+
+INSERT INTO
+    questions (title, body, author_id)
+VALUES (
+    'Captain', 'Captain??', (
+      SELECT
+        id
+      FROM
+        users
+      WHERE
+        lname LIKE 'Rogers'
+    ));
+
+INSERT INTO
+  questions (title, body, author_id)
+VALUES
+  ('Goose', 'Has anyone seen my cat?',
+  (SELECT id FROM users WHERE lname = 'Danvers'));
 
 CREATE TABLE question_follows
 (
@@ -52,15 +70,29 @@ CREATE TABLE question_follows
 );
 
 INSERT INTO
-  question_follows
-  (question_id, user_id)
+  question_follows (question_id, user_id)
 VALUES
-  ((SELECT id
-    FROM questions
-    WHERE title = 'Social Security Number'),
-    (SELECT id
-    FROM users
-    WHERE lname = 'Rhodes'));
+  ((SELECT id FROM questions WHERE title = 'Social Security Number'),
+    (SELECT id FROM users WHERE lname = 'Rhodes'));
+
+INSERT INTO
+  question_follows (question_id, user_id)
+VALUES
+  ((SELECT id FROM questions WHERE title = 'Captain'),
+    (SELECT id FROM users WHERE lname = 'Rogers'));
+
+INSERT INTO
+  question_follows (question_id, user_id)
+VALUES
+  ((SELECT id FROM questions WHERE title = 'Captain'),
+    (SELECT id FROM users WHERE lname = 'Danvers'));
+
+INSERT INTO
+  question_follows (question_id, user_id)
+VALUES
+  ((SELECT id FROM questions WHERE title = 'Captain'),
+    (SELECT id FROM users WHERE lname = 'Romonov'));
+
 
 CREATE TABLE replies
 (
@@ -76,14 +108,31 @@ CREATE TABLE replies
 );
 
 INSERT INTO
-  replies
-  (question_id, user_id, body)
+  replies (question_id, user_id, body)
 VALUES
   (1,
-    (SELECT id
-    FROM users
-    WHERE lname = 'Stark' AND fname = 'Tony'),
+    (SELECT id FROM users WHERE lname = 'Stark' AND fname = 'Tony'), 
     '5? There is definitely a 5 in there.');
+
+INSERT INTO
+  replies (question_id, user_id, body)
+VALUES
+  (2,
+    (SELECT id FROM users WHERE lname = 'Danvers' AND fname = 'Carol'),
+    'Captain.');
+
+INSERT INTO
+  replies (question_id, user_id, body)
+VALUES
+  (2,
+    (SELECT id FROM users WHERE lname = 'Rogers' AND fname = 'Steve'),
+    'Captain.');
+
+INSERT INTO
+  replies (question_id, user_id, body)
+VALUES
+  (2,
+    (SELECT id FROM users WHERE lname = 'Danvers' AND fname = 'Carol'), 'Captain.');
 
 CREATE TABLE question_likes
 (
@@ -105,3 +154,26 @@ VALUES
     (SELECT id
     FROM users
     WHERE lname = 'Rhodes'));
+
+INSERT INTO
+  question_likes
+  (question_id, user_id)
+VALUES
+  ((SELECT id
+    FROM questions
+    WHERE title = 'Social Security Number'),
+    (SELECT id
+    FROM users
+    WHERE lname = 'Danvers'));
+
+INSERT INTO
+  question_likes (question_id, user_id)
+VALUES
+  ((SELECT id FROM questions WHERE title = 'Captain'),
+    (SELECT id FROM users WHERE lname = 'Romonov'));
+
+INSERT INTO
+  question_likes (question_id, user_id)
+VALUES
+  ((SELECT id FROM questions WHERE title = 'Captain'),
+    (SELECT id FROM users WHERE lname = 'Danvers'));
