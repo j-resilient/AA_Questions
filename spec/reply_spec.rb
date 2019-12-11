@@ -66,4 +66,15 @@ describe 'Reply' do
             expect(reply.question.title).to eq('Captain')
         end
     end
+
+    describe "#parent_reply" do
+        let(:reply) { Reply.find_by_id(4) }
+        it 'returns a Reply object' do
+            expect(reply.parent_reply).to be_an_instance_of(Reply)
+        end
+        it 'returns the immediate parent' do
+            parent = reply.parent_reply
+            expect(parent.id).to eq(3)
+        end
+    end
 end
