@@ -17,11 +17,15 @@ describe 'Question' do
             expect(Question.find_by_author_id(10)).to eq(nil)
         end
         it 'returns correct question(s)' do
-            question = Question.find_by_author_id(2)
+            question = Question.find_by_author_id(2).first
             expect(question.title).to eq('Social Security Number')
         end
-        it 'returns a Question object' do
-            expect(Question.find_by_author_id(2)).to be_an_instance_of(Question)
+        it 'returns an array of Question objects' do
+            questions = Question.find_by_author_id(2)
+            expect(questions).to be_an_instance_of(Array)
+            questions.each do |question|
+                expect(question).to be_an_instance_of(Question)
+            end
         end
     end
 end

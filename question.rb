@@ -16,7 +16,7 @@ class Question
     end
 
     def self.find_by_author_id(target_id)
-        question = QuestionsDatabase.instance.execute(<<-SQL, target_id)
+        questions = QuestionsDatabase.instance.execute(<<-SQL, target_id)
             SELECT
               *
             FROM
@@ -24,7 +24,7 @@ class Question
             WHERE
               author_id = ?
         SQL
-        question.length > 0 ? Question.new(question.first) : nil
+        questions.length > 0 ? questions.map { |question| Question.new(question) } : nil
     end
 
     def initialize(options)
