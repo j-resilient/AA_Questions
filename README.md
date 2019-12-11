@@ -27,4 +27,6 @@ The database consists of three tables:
 'replies' keeps references to the question, the parent reply, and the author user; it also keeps the actual reply  
 'question_likes' keeps references to the user and the question
 ## Ruby  
-The QuestionsDatabase class only returns hashes. Each database has a corresponding model class to create objects out of the data returned from the database.
+The QuestionsDatabase class only returns hashes. Each database has a corresponding model class to create objects out of the data returned from the database.  
+## Rspec Tests  
+All of the rspec tests are based on the seeded values from import_db.sql .
