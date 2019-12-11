@@ -15,6 +15,18 @@ class Question
         question.length > 0 ? Question.new(question.first) : nil
     end
 
+    def self.find_by_author_id(target_id)
+        question = QuestionsDatabase.instance.execute(<<-SQL, target_id)
+            SELECT
+              *
+            FROM
+              questions
+            WHERE
+              author_id = ?
+        SQL
+        question.length > 0 ? Question.new(question.first) : nil
+    end
+
     def initialize(options)
         @id = options["id"]
         @title = options["title"]

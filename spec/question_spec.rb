@@ -11,4 +11,17 @@ describe 'Question' do
             expect(Question.find_by_id(1)).to be_an_instance_of(Question)
         end
     end
+
+    describe "::find_by_author_id" do
+        it 'returns nil if the author has no questions' do
+            expect(Question.find_by_author_id(10)).to eq(nil)
+        end
+        it 'returns correct question(s)' do
+            question = Question.find_by_author_id(2)
+            expect(question.title).to eq('Social Security Number')
+        end
+        it 'returns a Question object' do
+            expect(Question.find_by_author_id(2)).to be_an_instance_of(Question)
+        end
+    end
 end
