@@ -41,4 +41,18 @@ describe 'Question' do
             expect(author.lname).to eq('Potts')
         end
     end
+
+    describe "#replies" do
+        let(:question) { Question.find_by_id(2)}
+        subject(:replies) { question.replies }
+        it 'returns an array of reply objects' do
+            expect(replies).to be_an_instance_of(Array)
+            replies.each do |reply|
+                expect(reply).to be_an_instance_of(Reply)
+            end
+        end
+        it 'returns the correct number of replies' do
+            expect(replies.length).to eq(3)
+        end
+    end
 end

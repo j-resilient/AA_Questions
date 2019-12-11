@@ -1,5 +1,6 @@
 require_relative 'questions_database.rb'
 require_relative 'user.rb'
+require_relative 'reply.rb'
 
 class Question
     attr_accessor :id, :title, :body, :author_id
@@ -37,5 +38,9 @@ class Question
     
     def author
       User.find_by_id(@author_id)
+    end
+
+    def replies
+      Reply.find_by_question_id(@id)
     end
 end
