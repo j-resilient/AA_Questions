@@ -27,6 +27,20 @@ class QuestionFollow
         followers.length > 0 ? followers.map { |f| User.new(f) } : nil
     end
 
+    def self.followed_questions_for_user_id(user_id)
+        questions = QuestionsDatabase.instance.execute(<<-SQL, user_id)
+            SELECT
+              *
+            FROM
+              questions
+            JOIN
+              question_follows ON questions.id = question_follows.question_id
+            WHERE
+              question_follows.user_id = ?
+        SQL
+        questions.length > 0 ? questions.map { |q| Question.new(q) } : nil
+    end
+
     def initialize(options)
         @id = options['id']
         @question_id = options['question_id']

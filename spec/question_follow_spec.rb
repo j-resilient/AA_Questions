@@ -28,4 +28,23 @@ describe 'QuestionFollow' do
             end
         end
     end
+
+    describe "::followed_questions_for_user_id" do
+        let(:follows_nil) { User.find_by_name('Bruce', 'Banner') }
+        let(:follows_two) { User.find_by_name('Pepper', 'Potts') }
+        subject(:questions) { QuestionFollow.followed_questions_for_user_id(follows_two.id)}
+
+        it "returns nil if user isn't following any questions" do
+            expect(QuestionFollow.followed_questions_for_user_id(follows_nil.id)).to eq(nil)
+        end
+        it "returns an array of Question objects" do
+            expect(questions).to be_an_instance_of(Array)
+            questions.each do |question|
+                expect(question).to be_an_instance_of(Question)
+            end
+        end
+        it "returns the correct questions" do
+            expect(questions.first.title).to eq('Q1')
+        end
+    end
 end
