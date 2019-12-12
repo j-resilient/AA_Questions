@@ -47,4 +47,23 @@ describe 'QuestionFollow' do
             expect(questions.first.title).to eq('Q1')
         end
     end
+
+    describe "::most_followed_questions" do
+        subject(:questions) { QuestionFollow.most_followed_questions(2) }
+        it 'returns an array of Question objects' do
+            expect(questions).to be_an_instance_of(Array)
+            questions.each do |q|
+                expect(q).to be_an_instance_of(Question)
+            end
+        end
+        it 'returns a maximum of n questions' do
+            expect(questions.length).to be <= 2
+        end
+        it 'returns the most followed questions' do
+            titles = ['Q2', 'Q1']
+            questions.each_with_index do |q, idx|
+                expect(q.title).to eq(titles[idx])
+            end
+        end
+    end
 end
