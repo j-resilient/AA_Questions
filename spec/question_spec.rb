@@ -55,4 +55,16 @@ describe 'Question' do
             expect(replies.length).to eq(8)
         end
     end
+
+    describe "#followers" do
+        let(:question) { Question.find_by_id(1) }
+        subject(:followers) { question.followers}
+        
+        it 'returns an array of User objects' do
+            expect(followers).to be_an_instance_of(Array)
+            followers.each do |f|
+                expect(f).to be_an_instance_of(User)
+            end
+        end
+    end
 end
