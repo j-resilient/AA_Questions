@@ -29,6 +29,10 @@ class Question
         questions.length > 0 ? questions.map { |question| Question.new(question) } : nil
     end
 
+    def self.most_followed(n)
+      QuestionFollow.most_followed_questions(n)
+    end
+
     def initialize(options)
         @id = options["id"]
         @title = options["title"]

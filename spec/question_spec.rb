@@ -41,7 +41,7 @@ describe 'Question' do
             expect(author.lname).to eq('Potts')
         end
     end
-
+    
     describe "#replies" do
         let(:question) { Question.find_by_id(2)}
         subject(:replies) { question.replies }
@@ -59,11 +59,21 @@ describe 'Question' do
     describe "#followers" do
         let(:question) { Question.find_by_id(1) }
         subject(:followers) { question.followers}
-        
+
         it 'returns an array of User objects' do
             expect(followers).to be_an_instance_of(Array)
             followers.each do |f|
                 expect(f).to be_an_instance_of(User)
+            end
+        end
+    end
+
+    describe "::most_followed" do
+        let(:question) { Question.find_by_id(2) }
+        it 'returns an array of Question objects' do
+            expect(Question.most_followed(2)).to be_an_instance_of(Array)
+            Question.most_followed(2).each do |q|
+                expect(q).to be_an_instance_of(Question)
             end
         end
     end
