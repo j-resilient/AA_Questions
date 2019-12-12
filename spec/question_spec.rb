@@ -6,7 +6,7 @@ require_relative '../user'
 describe 'Question' do
     describe "::find_by_id" do
         it 'returns nil if id is not in database' do
-            expect(Question.find_by_id(9)).to eq(nil)
+            expect(Question.find_by_id(50)).to eq(nil)
         end
         it 'returns a Question object' do
             expect(Question.find_by_id(1)).to be_an_instance_of(Question)
@@ -15,11 +15,11 @@ describe 'Question' do
 
     describe "::find_by_author_id" do
         it 'returns nil if the author has no questions' do
-            expect(Question.find_by_author_id(10)).to eq(nil)
+            expect(Question.find_by_author_id(3)).to eq(nil)
         end
         it 'returns correct question(s)' do
             question = Question.find_by_author_id(2).first
-            expect(question.title).to eq('Social Security Number')
+            expect(question.title).to eq('Q1')
         end
         it 'returns an array of Question objects' do
             questions = Question.find_by_author_id(2)
@@ -52,7 +52,7 @@ describe 'Question' do
             end
         end
         it 'returns the correct number of replies' do
-            expect(replies.length).to eq(4)
+            expect(replies.length).to eq(8)
         end
     end
 end

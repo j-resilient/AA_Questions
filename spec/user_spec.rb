@@ -37,18 +37,18 @@ describe 'User' do
         end
         it 'returns all questions by user' do
             expect(questions.length).to eq(1)
-            expect(questions.first.title).to eq('Social Security Number')
+            expect(questions.first.title).to eq('Q1')
         end
     end
 
     describe "#authored_replies" do
         it 'returns nil if the user has no replies' do
-            rhodey = User.find_by_name('James', "Rhodes")
-            expect(rhodey.authored_replies).to eq(nil)
+            banner = User.find_by_name('Bruce', "Banner")
+            expect(banner.authored_replies).to eq(nil)
         end
         it 'returns all replies by user' do
             tony = User.find_by_name('Tony', 'Stark')
-            expect(tony.authored_replies.length).to eq(1)
+            expect(tony.authored_replies.length).to eq(2)
         end
     end
 end

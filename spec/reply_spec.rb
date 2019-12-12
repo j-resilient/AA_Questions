@@ -6,7 +6,7 @@ require_relative '../question'
 describe 'Reply' do
     describe "::find_by_id" do
         it 'returns nil if id is not in database' do
-            expect(Reply.find_by_id(9)).to eq(nil)
+            expect(Reply.find_by_id(500)).to eq(nil)
         end
         it 'returns a Reply object' do
             expect(Reply.find_by_id(1)).to be_an_instance_of(Reply)
@@ -42,7 +42,7 @@ describe 'Reply' do
         end
         it 'returns all replies' do
             replies = Reply.find_by_question_id(2)
-            expect(replies.length).to eq(3)
+            expect(replies.length).to eq(8)
         end
     end
 
@@ -58,17 +58,17 @@ describe 'Reply' do
     end
 
     describe "#question" do
-        let(:reply) { Reply.find_by_id(3) }
+        let(:reply) { Reply.find_by_question_id(2).first }
         it 'returns a Question object' do
             expect(reply.question).to be_an_instance_of(Question)
         end
         it 'returns the correct question' do
-            expect(reply.question.title).to eq('Captain')
+            expect(reply.question.id).to eq(2)
         end
     end
 
     describe "#parent_reply" do
-        let(:reply) { Reply.find_by_id(4) }
+        let(:reply) { Reply.find_by_id(6) }
         it 'returns a Reply object' do
             expect(reply.parent_reply).to be_an_instance_of(Reply)
         end
@@ -76,5 +76,12 @@ describe 'Reply' do
             parent = reply.parent_reply
             expect(parent.id).to eq(3)
         end
+        it 'returns nil if there is no parent'
+    end
+
+    describe "#child_replies" do
+        let(:reply) { }
+        it 'returns an array of Reply objects'
+        it 'returns all immediate children of this reply'
     end
 end
