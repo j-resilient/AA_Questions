@@ -76,7 +76,10 @@ describe 'Reply' do
             parent = reply.parent_reply
             expect(parent.id).to eq(3)
         end
-        it 'returns nil if there is no parent'
+        let(:nil_parent_reply) { Reply.find_by_id(1) }
+        it 'returns nil if there is no parent' do
+            expect(nil_parent_reply.parent_reply).to eq(nil)
+        end
     end
 
     describe "#child_replies" do
