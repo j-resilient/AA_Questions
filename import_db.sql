@@ -19,8 +19,7 @@ VALUES
   ('Carol', 'Danvers'), ('Steve', 'Rogers'), ('Natasha', 'Romonov');
 
 
-CREATE TABLE questions
-(
+CREATE TABLE questions (
   id INTEGER PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
   body TEXT,
@@ -32,35 +31,12 @@ CREATE TABLE questions
 INSERT INTO
   questions (title, body, author_id)
 VALUES
-  ('Social Security Number', 'What is your social security number?', (
-    SELECT
-      id
-    FROM
-      users
-    WHERE
-        lname LIKE 'Potts'
-    ));
+  ('Q1', 'Q1', (SELECT id FROM users WHERE lname LIKE 'Potts')),
+  ('Q2', 'Q2', ( SELECT id FROM users WHERE lname LIKE 'Stark')),
+  ('Q3', 'Q3', (SELECT id FROM users WHERE lname = 'Danvers'));
 
-INSERT INTO
-    questions (title, body, author_id)
-VALUES (
-    'Captain', 'Captain??', (
-      SELECT
-        id
-      FROM
-        users
-      WHERE
-        lname LIKE 'Rogers'
-    ));
 
-INSERT INTO
-  questions (title, body, author_id)
-VALUES
-  ('Goose', 'Has anyone seen my cat?',
-  (SELECT id FROM users WHERE lname = 'Danvers'));
-
-CREATE TABLE question_follows
-(
+CREATE TABLE question_follows (
   id INTEGER PRIMARY KEY,
   question_id INTEGER NOT NULL,
   user_id INTEGER NOT NULL,
@@ -72,30 +48,26 @@ CREATE TABLE question_follows
 INSERT INTO
   question_follows (question_id, user_id)
 VALUES
-  ((SELECT id FROM questions WHERE title = 'Social Security Number'),
-    (SELECT id FROM users WHERE lname = 'Rhodes'));
+  ((SELECT id FROM questions WHERE title LIKE 'Q1'),
+  (SELECT id FROM users WHERE lname LIKE 'Potts')),
+  ((SELECT id FROM questions WHERE title LIKE 'Q1'),
+  (SELECT id FROM users WHERE lname LIKE 'Stark')),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+  (SELECT id FROM users WHERE lname LIKE 'Stark')),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+  (SELECT id FROM users WHERE lname LIKE 'Potts')),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+  (SELECT id FROM users WHERE lname LIKE 'Rhodes')),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+  (SELECT id FROM users WHERE lname LIKE 'Rogers')),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+  (SELECT id FROM users WHERE lname LIKE 'Romonov')),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+  (SELECT id FROM users WHERE lname LIKE 'Danvers')),
+  ((SELECT id FROM questions WHERE title LIKE 'Q3'),
+  (SELECT id FROM users WHERE lname LIKE 'Danvers'));
 
-INSERT INTO
-  question_follows (question_id, user_id)
-VALUES
-  ((SELECT id FROM questions WHERE title = 'Captain'),
-    (SELECT id FROM users WHERE lname = 'Rogers'));
-
-INSERT INTO
-  question_follows (question_id, user_id)
-VALUES
-  ((SELECT id FROM questions WHERE title = 'Captain'),
-    (SELECT id FROM users WHERE lname = 'Danvers'));
-
-INSERT INTO
-  question_follows (question_id, user_id)
-VALUES
-  ((SELECT id FROM questions WHERE title = 'Captain'),
-    (SELECT id FROM users WHERE lname = 'Romonov'));
-
-
-CREATE TABLE replies
-(
+CREATE TABLE replies (
   id INTEGER PRIMARY KEY,
   question_id INTEGER NOT NULL,
   parent_id INTEGER,
@@ -110,32 +82,36 @@ CREATE TABLE replies
 INSERT INTO
   replies (question_id, user_id, body)
 VALUES
-  (1,
-    (SELECT id FROM users WHERE lname = 'Stark' AND fname = 'Tony'), 
-    '5? There is definitely a 5 in there.');
-
-INSERT INTO
-  replies (question_id, user_id, body)
-VALUES
-  (2,
-    (SELECT id FROM users WHERE lname = 'Danvers' AND fname = 'Carol'),
-    'Captain.');
-
-INSERT INTO
-  replies (question_id, parent_id, user_id, body)
-VALUES
-  (2, 2,
-    (SELECT id FROM users WHERE lname = 'Rogers' AND fname = 'Steve'),
-    'Captain.');
+  ((SELECT id FROM questions WHERE title LIKE 'Q1'),
+    (SELECT id FROM users WHERE lname = 'Stark'), 'Q1 Level 1'),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+    (SELECT id FROM users WHERE lname LIKE 'Romonov'), 'Q2 Level 1 a'),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+    (SELECT id FROM users WHERE lname LIKE 'Rhodes'), 'Q2 Level 1 b'),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+    (SELECT id FROM users WHERE lname LIKE 'Potts'), 'Q2 Level 1 c');
 
 INSERT INTO
   replies (question_id, parent_id, user_id, body)
 VALUES
-  (2, 3,
-    (SELECT id FROM users WHERE lname = 'Danvers' AND fname = 'Carol'), 'Captain.');
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+    (SELECT id FROM replies WHERE body LIKE 'Q2 Level 1 a'),
+    (SELECT id FROM users WHERE lname LIKE 'Rogers'), 'Q2 Level 2 a'),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+    (SELECT id FROM replies WHERE body LIKE 'Q2 Level 1 b'),
+    (SELECT id FROM users WHERE lname LIKE 'Danvers'), 'Q2 Level 2 b1'),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+    (SELECT id FROM replies WHERE body LIKE 'Q2 Level 1 b'),
+    (SELECT id FROM users WHERE lname LIKE 'Potts'), 'Q2 Level 2 b2'),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+    (SELECT id FROM replies WHERE body LIKE 'Q2 Level 2 b2'),
+    (SELECT id FROM users WHERE lname LIKE 'Stark'), 'Q2 Level 3 b2'),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+    (SELECT id FROM replies WHERE body LIKE 'Q2 Level 3 b2'),
+    (SELECT id FROM users WHERE lname LIKE 'Rhodes'), 'Q2 Level 4 b2');
 
-CREATE TABLE question_likes
-(
+
+CREATE TABLE question_likes (
   id INTEGER PRIMARY KEY,
   question_id INTEGER NOT NULL,
   user_id INTEGER NOT NULL,
@@ -145,35 +121,19 @@ CREATE TABLE question_likes
 );
 
 INSERT INTO
-  question_likes
-  (question_id, user_id)
-VALUES
-  ((SELECT id
-    FROM questions
-    WHERE title = 'Social Security Number'),
-    (SELECT id
-    FROM users
-    WHERE lname = 'Rhodes'));
-
-INSERT INTO
-  question_likes
-  (question_id, user_id)
-VALUES
-  ((SELECT id
-    FROM questions
-    WHERE title = 'Social Security Number'),
-    (SELECT id
-    FROM users
-    WHERE lname = 'Danvers'));
-
-INSERT INTO
   question_likes (question_id, user_id)
 VALUES
-  ((SELECT id FROM questions WHERE title = 'Captain'),
-    (SELECT id FROM users WHERE lname = 'Romonov'));
-
-INSERT INTO
-  question_likes (question_id, user_id)
-VALUES
-  ((SELECT id FROM questions WHERE title = 'Captain'),
-    (SELECT id FROM users WHERE lname = 'Danvers'));
+  ((SELECT id FROM questions WHERE title LIKE 'Q1'),
+  (SELECT id FROM users WHERE lname LIKE 'Stark')),
+  ((SELECT id FROM questions WHERE title LIKE 'Q1'),
+  (SELECT id FROM users WHERE lname LIKE 'Rhodes')),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+  (SELECT id FROM users WHERE lname LIKE 'Potts')),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+  (SELECT id FROM users WHERE lname LIKE 'Rhodes')),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+  (SELECT id FROM users WHERE lname LIKE 'Rogers')), 
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+  (SELECT id FROM users WHERE lname LIKE 'Romonov')),
+  ((SELECT id FROM questions WHERE title LIKE 'Q2'),
+  (SELECT id FROM users WHERE lname LIKE 'Danvers'));
