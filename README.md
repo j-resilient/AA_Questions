@@ -28,5 +28,6 @@ The database consists of three tables:
 'question_likes' keeps references to the user and the question
 ## Ruby  
 The QuestionsDatabase class only returns hashes. Each database has a corresponding model class to create objects out of the data returned from the database.  
+We were give the names and a little information for each method we needed to create.
 ## Rspec Tests  
 All of the rspec tests are based on the seeded values from import_db.sql .
