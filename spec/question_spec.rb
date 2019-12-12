@@ -52,7 +52,7 @@ describe 'Question' do
             end
         end
         it 'returns the correct number of replies' do
-            expect(replies.length).to eq(3)
+            expect(replies.length).to eq(4)
         end
     end
 end
