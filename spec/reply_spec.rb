@@ -80,8 +80,21 @@ describe 'Reply' do
     end
 
     describe "#child_replies" do
-        let(:reply) { }
-        it 'returns an array of Reply objects'
-        it 'returns all immediate children of this reply'
+        let(:no_reply) { Reply.find_by_id(4) }
+        it 'returns nil if there are no children' do
+            expect(no_reply.child_replies).to eq(nil)
+        end
+
+        let(:reply) { Reply.find_by_id(3) }
+        subject(:replies) { reply.child_replies }
+        it 'returns an array of Reply objects' do
+            expect(replies).to be_an_instance_of(Array)
+            replies.each do |reply|
+                expect(reply).to be_an_instance_of(Reply)
+            end
+        end
+        it 'returns all immediate children of this reply' do 
+            expect(replies.length).to eq( 2)
+        end
     end
 end
