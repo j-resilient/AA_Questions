@@ -51,4 +51,15 @@ describe 'User' do
             expect(tony.authored_replies.length).to eq(2)
         end
     end
+
+    describe "#followed_questions" do
+        subject(:user) { User.find_by_name('Pepper', 'Potts') }
+        it 'returns an array of Question objects' do
+            questions = user.followed_questions
+            expect(questions).to be_an_instance_of(Array)
+            questions.each do |q|
+                expect(q).to be_an_instance_of(Question)
+            end
+        end
+    end
 end
