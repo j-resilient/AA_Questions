@@ -16,7 +16,8 @@ INSERT INTO
   users (fname, lname)
 VALUES
   ('Tony', 'Stark'), ('Pepper', 'Potts'), ('James', 'Rhodes'),
-  ('Carol', 'Danvers'), ('Steve', 'Rogers'), ('Natasha', 'Romonov');
+  ('Carol', 'Danvers'), ('Steve', 'Rogers'), ('Natasha', 'Romonov'),
+  ('Bruce', 'Banner');
 
 
 CREATE TABLE questions (
