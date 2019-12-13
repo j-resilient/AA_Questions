@@ -28,6 +28,19 @@ class QuestionLike
         SQL
         likers.length > 0 ? likers.map { |l| User.new(l) } : nil
     end
+
+    def self.num_likes_for_question_id(question_id)
+        num = QuestionsDatabase.instance.execute(<<-SQL, question_id)
+            SELECT
+              COUNT(*)
+            FROM 
+              question_likes
+            WHERE
+              question_id = ?
+        SQL
+        # num is returned as an array of hashes where COUNT(*) is the key for the actual count
+        num.first["COUNT(*)"]
+    end
     
     def initialize(options)
         @id = options['id']

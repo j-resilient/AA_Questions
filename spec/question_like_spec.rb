@@ -29,4 +29,13 @@ describe 'QuestionLike' do
             expect(likers).to match_array(expected_likers)
         end
     end
+
+    describe "::num_likes_for_question_id" do
+        it 'returns the correct number of likes for a question' do
+            expect(QuestionLike.num_likes_for_question_id(2)).to eq(5)
+        end
+        it 'returns 0 if there are no likes' do
+            expect(QuestionLike.num_likes_for_question_id(3)).to eq(0)
+        end
+    end
 end
