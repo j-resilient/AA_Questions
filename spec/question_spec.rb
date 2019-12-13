@@ -94,4 +94,10 @@ describe 'Question' do
             expect(question.num_likes).to eq(5)
         end
     end
+
+    describe "::most_liked" do
+        it 'returns the correct number of questions' do
+            expect(Question.most_liked(2).length).to eq(2)
+        end
+    end
 end
