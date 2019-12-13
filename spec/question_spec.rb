@@ -77,4 +77,21 @@ describe 'Question' do
             end
         end
     end
+
+    let(:question) { Question.find_by_id(2) }
+    describe "#likers" do
+        it 'returns an array of User objects' do
+            likers = question.likers
+            expect(likers).to be_an_instance_of(Array)
+            likers.each do |l|
+                expect(l).to be_an_instance_of(User)
+            end
+        end
+    end
+
+    describe "#num_likes" do
+        it 'returns number of likes' do
+            expect(question.num_likes).to eq(5)
+        end
+    end
 end
