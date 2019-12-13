@@ -38,4 +38,22 @@ describe 'QuestionLike' do
             expect(QuestionLike.num_likes_for_question_id(3)).to eq(0)
         end
     end
+
+    describe "::liked_questions_for_user_id" do
+        subject(:questions) { QuestionLike.liked_questions_for_user_id(3) }
+        it 'returns an array of Question objects' do
+            expect(questions).to be_an_instance_of(Array)
+            questions.each do |q|
+                expect(q).to be_an_instance_of(Question)
+            end
+        end
+        it 'returns the questions that the user liked' do
+            liked_questions = [1, 2]
+            questions.map! { |q| q.id }
+            expect(questions).to match_array(liked_questions)
+        end
+        it 'returns nil if the user has not liked any questions' do
+            expect(QuestionLike.liked_questions_for_user_id(7)).to be_nil
+        end
+    end
 end
