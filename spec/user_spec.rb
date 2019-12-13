@@ -81,7 +81,6 @@ describe 'User' do
         it 'updates Users if user does exist' do
             peter = User.find_by_name('Peter', 'Porker')
             peter.lname = 'Parker'
-            expect(peter.id).to eq(8)
             peter.save
             expect(User.find_by_name('Peter', 'Parker')).to_not be_nil
             expect(User.find_by_name('Peter', 'Porker')).to be_nil
