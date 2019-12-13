@@ -55,6 +55,25 @@ class QuestionLike
         SQL
         questions.length > 0 ? questions.map { |q| Question.new(q) } : nil
     end
+
+    def self.most_liked_questions(n)
+        questions = QuestionsDatabase.instance.execute(<<-SQL, n)
+            SELECT
+              questions.*
+            FROM
+              questions
+            JOIN
+              question_likes ON questions.id = question_likes.question_id
+            GROUP BY 
+              questions.id
+            ORDER BY
+              COUNT(*) DESC
+            LIMIT
+              ?
+        SQL
+        questions.delete(nil)
+        questions.length > 0 ? questions.map { |q| Question.new(q) } : nil
+    end
     
     def initialize(options)
         @id = options['id']

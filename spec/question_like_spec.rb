@@ -56,4 +56,22 @@ describe 'QuestionLike' do
             expect(QuestionLike.liked_questions_for_user_id(7)).to be_nil
         end
     end
+
+    describe "::most_liked_questions" do
+        subject(:most_liked) { QuestionLike.most_liked_questions(2) }
+        it 'returns an array of Question objects' do
+            expect(most_liked).to be_an_instance_of(Array)
+            most_liked.each do |like|
+                expect(like).to be_an_instance_of(Question)
+            end
+        end
+        it 'returns at most n objects' do
+            expect(most_liked.length).to eq(2)
+        end
+        it 'returns the most liked questions' do
+            expected_ids = [1, 2]
+            most_liked.map! { |q| q.id }
+            expect(most_liked).to match_array(expected_ids)
+        end
+    end
 end
