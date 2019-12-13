@@ -69,4 +69,22 @@ describe 'User' do
             expect(tony.average_karma).to eq(5)
         end
     end
+
+    describe "#save" do
+        subject(:new_user) { User.new({ 'id' => nil, 'fname' => 'Peter', 'lname' => 'Porker'}) }
+
+        it 'inserts a new user into Users if they do not exist' do
+            new_user.save
+            expect(User.find_by_name('Peter', 'Porker')).to_not be_nil
+            expect(new_user.id).to eq(8)
+        end
+        it 'updates Users if user does exist' do
+            peter = User.find_by_name('Peter', 'Porker')
+            peter.lname = 'Parker'
+            expect(peter.id).to eq(8)
+            peter.save
+            expect(User.find_by_name('Peter', 'Parker')).to_not be_nil
+            expect(User.find_by_name('Peter', 'Porker')).to be_nil
+        end
+    end
 end
