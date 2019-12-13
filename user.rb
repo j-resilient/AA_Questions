@@ -52,7 +52,7 @@ class User
           CAST(COUNT(DISTINCT question_likes.id) AS FLOAT)/COUNT(DISTINCT questions.id)
         FROM
           questions
-        JOIN
+        LEFT OUTER JOIN
           question_likes ON questions.id = question_likes.question_id
         WHERE
           questions.author_id = ?
