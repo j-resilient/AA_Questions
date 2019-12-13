@@ -14,6 +14,20 @@ class QuestionLike
         SQL
         like.length > 0 ? QuestionLike.new(like.first) : nil
     end
+
+    def self.likers_for_question_id(question_id)
+        likers = QuestionsDatabase.instance.execute(<<-SQL, question_id)
+            SELECT
+              users.*
+            FROM
+              users
+            JOIN
+              question_likes ON users.id = question_likes.user_id
+            WHERE
+              question_likes.question_id = ?
+        SQL
+        likers.length > 0 ? likers.map { |l| User.new(l) } : nil
+    end
     
     def initialize(options)
         @id = options['id']
