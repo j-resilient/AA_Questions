@@ -45,4 +45,18 @@ class User
     def followed_questions
       QuestionFollow.followed_questions_for_user_id(@id)
     end
+
+    def average_karma
+      average = QuestionsDatabase.instance.execute(<<-SQL, @id)
+        SELECT
+          CAST(COUNT(DISTINCT question_likes.id) AS FLOAT)/COUNT(DISTINCT questions.id)
+        FROM
+          questions
+        JOIN
+          question_likes ON questions.id = question_likes.question_id
+        WHERE
+          questions.author_id = ?
+      SQL
+      average.first.flatten[1]
+    end
 end

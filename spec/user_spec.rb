@@ -62,4 +62,11 @@ describe 'User' do
             end
         end
     end
+
+    describe "#average_karma" do
+        subject(:tony) { User.find_by_id(1) }
+        it 'returns the average number of likes' do
+            expect(tony.average_karma).to eq(5)
+        end
+    end
 end
