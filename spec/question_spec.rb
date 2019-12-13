@@ -100,4 +100,18 @@ describe 'Question' do
             expect(Question.most_liked(2).length).to eq(2)
         end
     end
+
+    describe "#save" do
+        it 'inserts a new question into questions if it does not already exist' do
+            new_question = Question.new({'id' => nil, 'title' => 'Q4', 'body' => 'Q5', 'author_id' => 8})
+            new_question.save
+            expect(Question.find_by_author_id(8)).to_not be_nil
+        end
+        it 'updates a question if it does already exist' do
+            q4 = Question.find_by_author_id(8).first
+            q4.body = 'Q4'
+            q4.save
+            expect(Question.find_by_author_id(8).first.body).to eq('Q4')
+        end
+    end
 end

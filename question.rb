@@ -63,4 +63,25 @@ class Question
     def num_likes
       QuestionLike.num_likes_for_question_id(@id)
     end
+
+    def save
+      if @id.nil?
+        QuestionsDatabase.instance.execute(<<-SQL, @title, @body, @author_id)
+          INSERT INTO
+            questions (title, body, author_id)
+          VALUES
+            (?,?,?)
+        SQL
+          @id = QuestionsDatabase.instance.last_insert_row_id
+      else
+        QuestionsDatabase.instance.execute(<<-SQL, @title, @body, @id)
+          UPDATE
+            questions
+          SET
+            title = ?, body = ?
+          WHERE
+            id = ?
+        SQL
+      end
+    end
 end
