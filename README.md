@@ -1,5 +1,5 @@
 # AA_Questions  
-An application to create and manage a database of students questions.  
+Second SQL project from App Academy: an application to create and manage a database of students questions.  
 It tracks questions, replies to questions, replies to replies, and question likes.  
 Uses Ruby, Rspec, and SQLite.  
 ## To run
