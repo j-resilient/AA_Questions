@@ -30,4 +30,4 @@ The database consists of three tables:
 The QuestionsDatabase class only returns hashes. Each database has a corresponding model class to create objects out of the data returned from the database.  
 We were give the names and a little information for each method we needed to create.
 ## Rspec Tests  
-All of the rspec tests are based on the seeded values from import_db.sql .
+All of the rspec tests are based on the seeded values from import_db.sql, so you have to reset the database prior to running the specs.
