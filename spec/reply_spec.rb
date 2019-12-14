@@ -100,4 +100,22 @@ describe 'Reply' do
             expect(replies.length).to eq( 2)
         end
     end
+
+    describe "#save" do
+        subject(:new_reply) { Reply.new({'id' => nil, 'question_id' => 1, 'parent_id' => nil,
+        'user_id' => 2, 'body' => 'Q1 Level 1'}) }
+        it 'inserts a new reply if reply does not already exist' do
+            new_reply.save
+            expect(Reply.find_by_question_id(1).last.body).to eq('Q1 Level 1')
+            expect(new_reply.id).to_not be_nil
+        end
+        it 'updates replies if reply does exist' do
+            reply = Reply.find_by_question_id(1).last
+            current_id = reply.id
+            reply.body = 'Q1 Level 2'
+            reply.save
+            expect(reply.id).to eq(current_id)
+            expect(Reply.find_by_question_id(1).last.body).to eq('Q1 Level 2')
+        end
+    end
 end

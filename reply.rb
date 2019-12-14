@@ -72,4 +72,25 @@ class Reply
         SQL
         children.length > 0 ? children.map { |child| Reply.new(child) } : nil
     end
+
+    def save
+        if @id.nil?
+            QuestionsDatabase.instance.execute(<<-SQL, @question_id, @parent_id, @user_id, @body)
+                INSERT INTO
+                  replies (question_id, parent_id, user_id, body)
+                VALUES
+                  (?,?,?,?)
+            SQL
+            @id = QuestionsDatabase.instance.last_insert_row_id
+        else
+            QuestionsDatabase.instance.execute(<<-SQL, @question_id, @parent_id, @user_id, @body, @id)
+                UPDATE
+                  replies
+                SET
+                  question_id = ?, parent_id = ?, user_id = ?, body = ?
+                WHERE
+                  id = ?
+            SQL
+        end
+    end
 end
